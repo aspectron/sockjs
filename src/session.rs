@@ -1,5 +1,5 @@
 use actix::*;
-
+use actix_derive::Message;
 use protocol::Frame;
 use context::SockJSContext;
 

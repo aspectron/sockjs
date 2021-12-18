@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use std::marker::PhantomData;
 use std::rc::Rc;
 
-use actix::{Actor, Addr, Syn};
+use actix::{Actor, Addr, sync};
 use actix_web::dev::{AsyncResult, Handler, Resource};
 use actix_web::{HttpMessage, HttpRequest, HttpResponse};
 use futures::future::Either;
@@ -26,7 +26,7 @@ where
     A: Actor<Context = SockJSContext<A>> + Session,
     SM: SessionManager<A>,
 {
-    manager: Rc<Addr<Syn, SM>>,
+    manager: Rc<Addr<Sync, SM>>,
     act: PhantomData<A>,
     state: PhantomData<S>,
     rng: RefCell<ThreadRng>,
@@ -62,7 +62,7 @@ where
 {
     /// Create new sockjs application. Sockjs application requires
     /// Session manager's address.
-    pub fn new(manager: Addr<Syn, SM>) -> Self {
+    pub fn new(manager: Addr<Sync, SM>) -> Self {
         let html = protocol::IFRAME_HTML.to_owned();
         let digest = md5::compute(&html);
         let patterns: Vec<_> = PATTERNS

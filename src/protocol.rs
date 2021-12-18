@@ -1,3 +1,4 @@
+use actix_derive::Message;
 use bytes::Bytes;
 use session::SessionError;
 
